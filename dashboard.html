@@ -28,7 +28,15 @@
                     <small class="text-muted" data-i18n="dashboard">My Dashboard</small>
                 </div>
             </div>
-            <a href="profile.html" class="btn btn-outline-info rounded-pill fw-bold" data-i18n="profile">👤 Profile</a>
+            
+            <div class="d-flex gap-2">
+                <a href="profile.html" class="btn btn-outline-info rounded-pill fw-bold d-flex align-items-center">
+                    👤 <span class="d-none d-md-inline ms-1" data-i18n="profile">Profile</span>
+                </a>
+                <button onclick="logout()" class="btn btn-danger rounded-pill fw-bold d-flex align-items-center">
+                    🚪 <span class="d-none d-md-inline ms-1" data-i18n="logout">Exit</span>
+                </button>
+            </div>
         </div>
     </div>
 
