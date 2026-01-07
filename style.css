@@ -7,90 +7,140 @@
     --yellow: #FFE66D;        /* Sun */
     --dark: #2F2F2F;
     --purple: #6c5ce7;
+    --green: #2ecc71;
 }
 
-body {
-    font-family: 'Varela Round', sans-serif;
-    background-color: #E0F7FA;
-    color: var(--dark);
+html, body {
+    width: 100%;
+    min-height: 100vh;
     overflow-x: hidden;
-    padding-bottom: 100px;
+    font-family: 'Varela Round', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 100%);
+    background-attachment: fixed;
 }
 
-/* Background Animation */
-.bg-shape {
+/* --- 🌟 BACKGROUND ANIMATION 🌟 --- */
+.bg-container {
     position: fixed;
-    z-index: -1;
-    opacity: 0.6;
-    animation: moveLeft 30s linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
     pointer-events: none;
+    overflow: hidden;
 }
-.cloud { font-size: 8rem; top: 10%; animation-duration: 40s; }
-.bird { font-size: 3rem; top: 20%; animation-duration: 25s; }
-@keyframes moveLeft { 0% { left: 100vw; } 100% { left: -20vw; } }
 
-/* Cards */
+.floating-svg { position: absolute; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1)); }
+.cloud-anim { animation: moveLeft linear infinite; top: 10%; opacity: 0.9; }
+.cloud-fast { top: 15%; width: 100px; animation-duration: 35s; }
+.cloud-slow { top: 40%; width: 80px; animation-duration: 55s; animation-delay: -10s; }
+.sun-anim { position: absolute; top: -50px; right: -50px; width: 150px; animation: spin 60s linear infinite; }
+.hill-svg { position: absolute; bottom: -5px; left: 0; width: 100%; height: auto; z-index: 0; }
+
+@keyframes moveLeft { 0% { left: 110%; } 100% { left: -30%; } }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* --- CONTENT LAYER --- */
+.container, .lang-float { position: relative; z-index: 10; }
+
+/* --- CARD STYLES --- */
 .kid-card {
     background: white;
-    border-radius: 25px;
+    border-radius: 20px;
     border: 4px solid var(--secondary);
     box-shadow: 0 8px 0 rgba(0,0,0,0.1);
     transition: transform 0.2s;
     overflow: hidden;
-    position: relative;
+    margin-bottom: 5px;
 }
+.kid-card:active { transform: scale(0.98); box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
 
-.kid-card:hover { transform: translateY(-5px); }
-
-/* The Action Buttons (Watch vs Quiz) */
-.action-btn-group {
-    display: flex;
-    margin-top: 15px;
-    border-top: 2px dashed #ddd;
-}
-
-.action-btn {
-    flex: 1;
-    padding: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
+/* --- QUIZ SPECIFIC STYLES (NEW) --- */
+.quiz-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #ffffff;
+    border: 5px solid var(--purple);
+    border-radius: 30px;
+    box-shadow: 0 10px 0 rgba(108, 92, 231, 0.2);
     text-align: center;
-    transition: opacity 0.2s;
 }
 
-.btn-video { background-color: var(--purple); border-right: 2px solid white; }
-.btn-quiz { background-color: var(--primary); }
-.action-btn:hover { opacity: 0.9; color: white; }
-
-/* Profile Avatar Grid */
-.avatar-option {
-    font-size: 4rem;
-    cursor: pointer;
-    border: 4px solid transparent;
-    border-radius: 50%;
-    padding: 10px;
-    transition: transform 0.2s;
-}
-.avatar-option:hover { transform: scale(1.1); }
-.avatar-option.selected {
-    border-color: var(--secondary);
-    background-color: #e0f2f1;
+.big-emoji {
+    font-size: 6rem;
+    display: block;
+    margin-bottom: 10px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Global Language Float */
-.lang-float {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-/* Big Input */
-.big-input {
+.quiz-option {
+    background: white;
+    border: 3px solid #ddd;
+    border-radius: 50px; /* Pill shape */
+    padding: 15px 20px;
     font-size: 1.5rem;
-    border: 3px solid var(--primary);
-    border-radius: 15px;
-    text-align: center;
-    padding: 15px;
+    font-weight: bold;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 5px 0 #eee;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.quiz-option:hover {
+    transform: translateY(-3px);
+    border-color: var(--secondary);
+    background-color: #f0fffe;
+}
+
+.quiz-option:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* Correct/Wrong States */
+.quiz-option.correct {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    box-shadow: 0 5px 0 #c3e6cb;
+    animation: bounce 0.5s;
+}
+
+.quiz-option.wrong {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+    animation: shake 0.5s;
+}
+
+@keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+@keyframes bounce { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.1);} }
+@keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
+
+/* --- OTHER STYLES --- */
+.subject-icon { font-size: 3.5rem; display: block; }
+h3 { font-size: 1.4rem; color: var(--dark); }
+
+@media (max-width: 576px) {
+    .subject-icon { font-size: 2.5rem; }
+    h3 { font-size: 1.1rem; }
+    .action-btn { padding: 8px 2px; font-size: 0.8rem; }
+    .hill-svg { width: 160%; left: -30%; }
+    .quiz-card { padding: 1.5rem 1rem; } /* Less padding on mobile */
+    .big-emoji { font-size: 4rem; }
+}
+
+/* Buttons */
+.action-btn-group { display: flex; margin-top: 10px; border-top: 2px dashed #eee; }
+.action-btn { flex: 1; padding: 10px; font-weight: bold; text-decoration: none; color: white; text-align: center; }
+.btn-video { background-color: var(--purple); border-right: 2px solid white; border-bottom-left-radius: 15px;}
+.btn-quiz { background-color: var(--primary); border-bottom-right-radius: 15px;}
+.lang-float { position: absolute; top: 15px; right: 15px; z-index: 1000; }
