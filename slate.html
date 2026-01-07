@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Magic Slate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { overflow: hidden; background: #2F2F2F; touch-action: none; font-family: sans-serif; }
+        #canvas-container {
+            position: relative;
+            background: #111;
+            border: 8px solid #FF6B6B;
+            border-radius: 15px;
+            margin: 10px;
+            height: 80vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+        
+        /* Controls at bottom */
+        .slate-controls {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 15px; background: white;
+            padding: 10px 20px; border-radius: 50px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+        .color-btn { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #ddd; cursor: pointer; transition: transform 0.1s;}
+        .color-btn:active { transform: scale(0.9); }
+    </style>
+</head>
+<body>
+
+    <a href="dashboard.html" class="btn btn-warning rounded-pill fw-bold" style="position: fixed; top: 15px; left: 15px; z-index: 100;">⬅ Back</a>
+
+    <div id="canvas-container">
+        <canvas id="drawingBoard"></canvas>
+    </div>
+
+    <div class="slate-controls align-items-center">
+        <div class="color-btn" style="background: white;" onclick="setColor('white')"></div>
+        <div class="color-btn" style="background: #FF6B6B;" onclick="setColor('#FF6B6B')"></div>
+        <div class="color-btn" style="background: #4ECDC4;" onclick="setColor('#4ECDC4')"></div>
+        <div class="color-btn" style="background: #FFE66D;" onclick="setColor('#FFE66D')"></div>
+        <div style="width: 1px; height: 40px; background: #ddd;"></div>
+        <button class="btn btn-danger rounded-pill fw-bold" onclick="clearSlate()">🗑️ Wipe</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawingBoard');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+        let painting = false;
+
+        function resizeCanvas() {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = 'white';
+        }
+        window.addEventListener('resize', resizeCanvas);
+        // Delay slightly to ensure container is rendered
+        setTimeout(resizeCanvas, 100);
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+        function draw(e) {
+            if (!painting) return;
+            e.preventDefault(); 
+            
+            let clientX, clientY;
+            if(e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        // Touch Events
+        canvas.addEventListener('touchstart', startPosition);
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', draw);
+
+        function setColor(color) { ctx.strokeStyle = color; }
+        function clearSlate() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    </script>
+</body>
+</html>

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play Quiz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
@@ -21,9 +23,13 @@
 
         <div id="quiz-container" class="kid-card p-4 text-center mx-auto" style="max-width: 600px; min-height: 400px;">
             
-            <div id="question-visual" class="big-emoji mb-3">❓</div>
+            <div id="question-visual" class="big-emoji mb-2">❓</div>
             
-            <h2 id="question-text" class="mb-5" style="color: var(--primary);">Loading...</h2>
+            <h2 id="question-text" class="mb-3" style="color: var(--primary);">Loading...</h2>
+            
+            <button onclick="speakQuestion()" class="btn btn-sm btn-info rounded-pill mb-4 text-white fw-bold">
+                🔊 Listen
+            </button>
             
             <div id="options-grid" class="row justify-content-center gap-3">
                 </div>
@@ -32,12 +38,23 @@
 
     <script src="script.js"></script>
     <script>
-        // Init Quiz on Page Load
         const params = new URLSearchParams(window.location.search);
         const subject = params.get('subject') || 'math';
         
-        // Start the logic
         loadQuestionUI(subject);
+
+        // Speech Logic
+        function speakQuestion() {
+            const text = document.getElementById('question-text').innerText;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; 
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Browser cannot speak!");
+            }
+        }
     </script>
 </body>
 </html>
