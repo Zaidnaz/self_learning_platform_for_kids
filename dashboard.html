@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-shape cloud">☁️</div>
+    <div class="bg-shape bird">🕊️</div>
+    <div class="bg-shape sun">☀️</div>
+
+    <nav class="crazy-navbar sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="nav-btn text-decoration-none text-dark">🏠 Home</a>
+            <div class="h4 mb-0 text-primary fw-bold">
+                ⭐ <span id="user-score">0</span>
+            </div>
+            <a href="profile.html" class="nav-btn text-decoration-none text-dark">👤 Me</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-5 fw-bold" style="color: var(--primary); text-shadow: 2px 2px white;" data-i18n="dashboard">My Dashboard</h1>
+
+        <div class="row g-4 justify-content-center">
+            
+            <div class="col-6 col-md-3">
+                <div class="kid-card p-3 text-center" onclick="window.location.href='quiz.html?subject=math'">
+                    <span class="big-emoji">🔢</span>
+                    <h3 data-i18n="math">Math</h3>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="kid-card p-3 text-center" onclick="window.location.href='quiz.html?subject=english'">
+                    <span class="big-emoji">🅰️</span>
+                    <h3 data-i18n="english">English</h3>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="kid-card p-3 text-center" onclick="window.location.href='quiz.html?subject=nature'">
+                    <span class="big-emoji">🌳</span>
+                    <h3 data-i18n="nature">Nature</h3>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="kid-card p-3 text-center" onclick="window.location.href='quiz.html?subject=logic'">
+                    <span class="big-emoji">🧩</span>
+                    <h3 data-i18n="logic">Logic</h3>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="kid-card p-4 text-center" style="background-color: #FFF3E0;" onclick="window.location.href='learn.html?subject=math'">
+                    <h3>🎥 Watch & Learn Videos</h3>
+                    <p>Click here to watch cartoons and learn!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
